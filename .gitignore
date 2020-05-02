@@ -1,0 +1,63 @@
+*.py[cod]
+
+venv/
+
+*.pyc
+__pycache__/
+
+dist/
+build/
+
+.idea/
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# SQLite databases
+*.sqlite
+
+# Environment files
+.env
+.env-mysql
+.idea/.gitignore
+.idea/FLASK-Miguel-Grinberg-Book.iml
+.idea/codeStyles/
+.idea/dbnavigator.xml
+.idea/dictionaries/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+README.MD
+hello.py
