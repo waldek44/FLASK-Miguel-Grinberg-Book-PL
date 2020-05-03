@@ -112,4 +112,93 @@ Flask dostarcza też hooki do obsłużenia kodu przed wywołaniem żądania (bef
 > Str. 39  
 > Opis dodawania do odpowiedzi kodu statusu (domyślnie 200), oraz obiektów odpowiedzi (np. headers, set_cookie, itp...). 
 
+<hr>
 
+### 3. SZABLONY
+
+Rozdzielam logikę biznesową od logiki prezentacji. Domyślnie Flask szuka szablonów html w podkatalogu templates
+
+<hr>
+
+Tworzę: katalog **templates** oraz pliki  **templates/index.html** i **templates/user.html**
+
+<hr>
+
+Modyfikuję funkcję widoku w **hello.py**
+
+<hr>
+
+#### ZMIENNE
+
+Jinja 2 rozpoznaje zmienne dowolnego typu, np:  
+```
+<p>Słownik: {{ mydict['key'] }}  </p>
+<p>Lista: {{ mylist[3] }}  </p>
+<p>Lista ze zmiennym indeksem: {{ mylist[myintvar] }}  </p>
+<p>Wartość z metody obiektu: {{ myobject.somemethod() }}  </p>
+```
+
+Zmienne można modyfikować filtrami:
+```
+<p> {{ name|save }} </p>           // renderuje wartość bez interpretowania znaków modyfikacji 
+<p> {{ name|capitalize }} </p>     // renderuje pierwszy znak na dużą literę
+<p> {{ name|lower }} </p>          // zmienia tekst na małe litery
+<p> {{ name|upper }} </p>          // zmienia tekst na duże litery
+<p> {{ name|title }} </p>          // Pierwsza litera każdego słowa jest duża
+<p> {{ name|trim }} </p>           // usuwa początkowe i końcowe białe znaki
+<p> {{ name|striptags }} </p>      // usuwa znaczniki html
+```
+
+<hr>
+
+#### BOOTSTRAP
+
+Instaluję rozszerzenie do integracji z bootstrap
+```
+pip install flask-bootstrap
+```
+
+<hr>
+
+Inicjalizuję to rozszerzenie w pliku **hello.py**
+
+<hr>
+
+Rozszerzenie flask-bootstrap posiada już własne szablony bazowe w venv i mogę je dziedziczyć, tworzę własny **templates/base.html** 
+i w nim dziedziczę po **bootstrap/base.html**. Edytuję też **templates/user.html** .
+
+
+<hr>
+ 
+Dodaję też obsługę wyjątków 404 i 500. Tworzę **templates/404.html** i **templates/500.html** oraz tworzę do nich widoki w **hello.py**
+
+<hr>
+
+#### PLIKI STATYCZNE
+
+Flask domyślnie szuka plików statycznych w podkatalogu static. Tworzę podkatalog **static**. Dodaję favicon.
+
+<hr>
+
+#### DATA I CZAS - MOMENT.JS
+Biblioteka Moment.js pozwala na pracę w Flask w UTC a potem konwertowanie czasu na lokalny po stronie klienta (przez przeglądarkę).  
+Instaluję rozszerzenie do pracy z Moment.js
+```
+pip install flask-moment
+```
+
+<hr>
+
+Inicjuję te rozszerzenie w instancji **hello.py**
+
+<hr>
+
+Dodaję bibliotekę w **bootstrap/base.html**
+
+<hr>
+
+Importuję zmienną datetime i dodaję ją do funkcji index w **hello.py**
+
+<hr>
+
+Renderuję zmienną current_time z widoku w szablonie **bootstrap/index.html**
