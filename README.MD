@@ -2,7 +2,7 @@
 > Tutorial treningowy na podstawie książki autorstwa Miguela Grinberga (Helion), ISBN: 978-83-283-6383-0
 <hr>
 
-### 1. INSTALACJA
+## 1. INSTALACJA
 
 Instaluję Flask
 ```
@@ -22,7 +22,7 @@ U mnie to:
 > MarkupSafe==1.1.1  
 > Werkzeug==1.0.1  
 
-### 2. PODSTAWOWA STRUKTURA APLIKACJI
+## 2. PODSTAWOWA STRUKTURA APLIKACJI
 
 #### INICJALIZACJA
 Wszystkie aplikacje Flask muszą utworzyć **instancję aplikacji**
@@ -114,7 +114,7 @@ Flask dostarcza też hooki do obsłużenia kodu przed wywołaniem żądania (bef
 
 <hr>
 
-### 3. SZABLONY
+## 3. SZABLONY
 
 Rozdzielam logikę biznesową od logiki prezentacji. Domyślnie Flask szuka szablonów html w podkatalogu templates
 
@@ -202,3 +202,57 @@ Importuję zmienną datetime i dodaję ją do funkcji index w **hello.py**
 <hr>
 
 Renderuję zmienną current_time z widoku w szablonie **bootstrap/index.html**
+
+<hr>
+
+## 4. FORMULARZE INTERNETOWE
+
+> W przypadku żądań typu POST wysyłanych w formularzu od klienta do serwera, obiekt żądania zapewnia 
+> dostęp do informacji wprowadzonych przez użytkownika za pomocą pola request.form
+
+W pracy z formularzami pomaga rozszerzenie flask-WTF (To rozszerzenie jest wrapperem integrującym pakiet WTForms z Flaskiem).  
+
+Instaluję flask-WTF
+```
+pip install flask-wtf
+```
+flask-WTF wyjątkowo nie oczekuje inicjalizacji w aplikacji, ale oczekuje skonfigurowania SECRET_KEY. Tworzę go więc w **hello.py**  
+
+<hr>
+
+#### KLASY FORMULARZY
+> We flask-WTF każdy formularz internetowy jest reprezentowany przez klasą (która dziedziczy po FlaskForm).  
+> Klasa ta definiuje listę pól formularza. Każde pole to osobny obiekt. Lista pól na str. 59
+
+Importuję wtf i dodaję klasę formularza w **hello.py**  
+
+<hr>
+
+#### RENDEROWANIE FORMULARZY
+
+> Funkcja widoku musi przekazać do szablonu instancję klasy (NameForm u mnie) jako argument. Wtedy pola formularza po wywołaniu w szablonie renderują się do elementów HTML.
+
+Edytuję funkcję widoku **index()** w pliku **hello.py**.  Teraz ta funkcja będzie miała dwa zadania:  
+Najpierw wyrenderuje formularz, a potem obsłuży wprowadzone przez użytkownika dane.
+
+Renderuję formularz w **templates/index.html**
+ 
+<hr>
+
+#### PRZEKIEROWANIA I SESJE UŻYTKOWNIKA
+
+> Aplikacje internetowe mogą zapamiętywać dane przechodzące z jednego żądania do kolejnego, przechowując je w sesji użytkownika.
+> Domyślnie sesje użytkownika są przechowywane w plikach cookie po stronie klienta.
+> We Flask mam do dyspozycji globalną zmienną żądania - **session**, mogę z niej korzystać jak ze standardowego słownika w Pythonie.
+
+<hr>
+
+#### WYŚWIETLANIE KOMUNIKATÓW
+
+We Flask do wyświetlania informacji i alertów używam metody **flash()**. Dla przykładu dodaję ifa który wyświetli alert
+jeśli użytkownik był zalogowany w sesji pod innym imieniem. Taki flash trzeba renderować w szablonie, zmieniam **templates/base.html**
+ 
+
+
+
+

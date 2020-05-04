@@ -4,8 +4,35 @@
 
 {% block page_content %}
     <div class="page-header">
-        <h1> to jest hello z index </h1>
+        <h1> Witaj, {% if name %} {{ name }} {% else %} Nieznajomy {% endif %} !</h1>
+    </div>
+
+    <div>
+        <!-- bez styli -->
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.name.label }}  {{ form.name() }}
+            {{ form.submit() }}
+        </form>
+
+        <!-- stylowanie -->
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.name.label }}  {{ form.name(id='mozna-ostylowac') }}
+            {{ form.submit(style='color: red;') }}
+        </form>
+
+        <!-- stylowanie za pomocą rozszerzenia Flask-Bootstrap -->
+        <hr>
+        <form method="post">
+            {% import "bootstrap/wtf.html" as wtf %}
+            {{ wtf.quick_form(form) }}
+        </form>
+    </div>
+
+    <div>
         <p>Lokalna data i czas: {{ moment(current_time).format('LLLL') }}.</p>
         <p>To było: {{ moment(current_time).fromNow(refresh=True) }}.</p>
     </div>
+
 {% endblock %}
