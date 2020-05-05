@@ -252,7 +252,81 @@ Renderuję formularz w **templates/index.html**
 We Flask do wyświetlania informacji i alertów używam metody **flash()**. Dla przykładu dodaję ifa który wyświetli alert
 jeśli użytkownik był zalogowany w sesji pod innym imieniem. Taki flash trzeba renderować w szablonie, zmieniam **templates/base.html**
  
+<hr>
 
+## 5. BAZY DANYCH
 
+<hr>
 
+#### ZARZĄDZANIE BAZĄ DANYCH ZA POMOCĄ FLASK-SQLALCHEMY
 
+Flask-SQLAlchemy to rozszerzenie które ułatwia pracę z frameworkiem ORM SQLAlchemy, które warto zainstalować:
+```
+pip install flask-sqlalchemy
+```
+
+> We Flask-SQLAlchemy baza danych jest podawana jako adres URL (mysql to użytkownik://użytkownik:hasło@localhost/nazwa_bazy)
+> i zapisujemy ją w zmiennej SQLALCHEMY_DATABASE_URI
+
+Inicjalizuję i konfiguruję bazę danych w **hello.py**
+
+<hr>
+
+#### DEFINICJA MODELU
+> Model to klasa Pythona z atrybutami odpowiadającymi kolumnom przypisanej mu tabeli bazy danych.  
+> Na str. 75 są najpopularniejsze typy kolumn w SQLAlchemy
+
+W **hello.py** definiuję modele **Role** i **User**
+
+<hr>
+
+#### OPERACJE NA BAZACH DANYCH
+Modele mam już skonfigurowane, można ich używać. Dobrą metodą wypróbowania modeli jest skorzystanie z powłoki Pythona:  
+```
+set FLASK_APP=hello.py
+flask shell
+from hello import db
+db.create_all()
+``` 
+ Polecenie **db.create_all()** tworzy nowy plik bazy danych.
+ 
+ Wstawianie przykładowych wierszy:
+ ```
+from hello import Role, User
+admin_role = Role(name='Admin')
+mod_role = Role(name='Moderator')
+user_role = Role(name='User')
+user_john = User(username='Jan', role='admin_role')
+user_suzan = User(username='Zuzia', role='user_role')
+user_david = User(username='Dawid', role='user_role')
+```
+
+<hr>
+
+#### BAZA DANYCH W FUNKCJACH WIDOKU
+Edytuję widok index w hello.py aby dodawał dane z formularza do db. Edytuję też **templates/index.html**
+
+<hr>
+
+#### KONFIGURACJA INTEGRACJI Z POWŁOKĄ PYTHONA
+Aby nie importować instancji aplikacji do powłoki shell za każdym razem muszę utworzyć procesor kontekstu powłoki 
+i zarejestrować go za pomocą dekoratora **@app.shell_context_processor** w **hello.py** 
+
+<hr>
+
+#### MIGROWANIE BAZ DANYCH | PAKIET FLASK-MIGRATE
+Aby aktualizować tabele db po zmianach dokonanych w modelach używam frameworka migracji flask-migrate.  
+```
+pip install flask-migrate
+```
+Inicjuję pakiet w **hello.py** 
+
+Inicjuję też pakiet w aplikacji za pomocą CLI:
+```
+flask db init
+```
+To polecenie utworzy katalog migracji. Następnie wysyłam migracje ze skryptów:
+```
+flask db migrate
+flask db upgrade
+```

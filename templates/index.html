@@ -1,32 +1,20 @@
 {% extends "base.html" %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 {% block title %}Flasky - strona główna{% endblock %}
 
 {% block page_content %}
     <div class="page-header">
         <h1> Witaj, {% if name %} {{ name }} {% else %} Nieznajomy {% endif %} !</h1>
+        {% if not known %}
+            <p>Miło Cię poznać!</p>
+            {% else %}
+            <p>Dobrze Cię znowu widzieć!</p>
+        {% endif %}
     </div>
 
     <div>
-        <!-- bez styli -->
         <form method="post">
-            {{ form.hidden_tag() }}
-            {{ form.name.label }}  {{ form.name() }}
-            {{ form.submit() }}
-        </form>
-
-        <!-- stylowanie -->
-        <form method="post">
-            {{ form.hidden_tag() }}
-            {{ form.name.label }}  {{ form.name(id='mozna-ostylowac') }}
-            {{ form.submit(style='color: red;') }}
-        </form>
-
-        <!-- stylowanie za pomocą rozszerzenia Flask-Bootstrap -->
-        <hr>
-        <form method="post">
-            {% import "bootstrap/wtf.html" as wtf %}
-            {{ wtf.quick_form(form) }}
+           {{ wtf.quick_form(form) }}
         </form>
     </div>
 
