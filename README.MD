@@ -330,3 +330,61 @@ To polecenie utworzy katalog migracji. Następnie wysyłam migracje ze skryptów
 flask db migrate
 flask db upgrade
 ```
+
+ 
+<hr>
+
+## 6. WIADOMOŚCI EMAIL
+> Wysyłanie wiadomości email z aplikacji za pomocą standardowej biblioteki Pythona **smtplib** ułatwia pakiet **Flask-Mail**  
+> Rozszerzenie to łączy się z serwerem SMTP i przesyła do niego wiadomość, po czym serwer dostarcza ją do adresata. 
+> Klucze konfiguracyjne na str. 87 
+
+```
+pip install flask-mail
+```
+
+Konfiguruję wysyłanie maila w **hello.py** 
+
+<hr>
+
+#### WYSYŁANIE WIADOMOŚCI E-MAIL Z POWŁOKI PYTHONA
+
+Aby przetestować konfigurację:
+```
+set FLASK_APP=hello.py
+set MAIL_USERNAME=<gmail username>
+set MAIL_PASSWORD=<gmail password>
+
+flask shell
+from flask_mail import Message
+from hello import mail
+msg = Message('Testowy mail', sender='toja@aplikacja.com', recipients=['toja@aplikacja.com'])
+msg.body = 'To jest tekst'
+msg.html = 'To jest treść w <b>HTML</b>.'
+with app.app_context():
+    mail.send(msg)
+
+```
+
+<hr>
+
+#### INTEGROWANIE WIADOMOŚCI E-MAIL Z APLIKACJĄ
+
+Wyodrębniam elementy operacji wysyłania e-mail do osobnej funkcji w **hello.py**, rozbudowuję funkcję indextak aby wysłała maila do
+administratora za każdym razem gdy pojawi się nowy user. Szczegóły na str.89 i 90  
+Tworzę **templates/mail/new_user.html** i **templates/mail/new_user.txt**.  
+
+Następnie muszę w terminalu utworzyć zmienną FLASKY_ADMIN
+```
+set FLASKY_ADMIN=mymail@gmail.com
+```
+
+<hr>
+
+#### ASYNCHRONICZNE WYSYŁANIE E-MAIL
+
+> Wiele rozszerzeń Flaska ma problem ponieważ wymagają aktywnego kontekstu aplikacji lub żądań do działania. Niestety konteksty 
+> mogą być powiązane z innym wątkiem, dlatego warto czasem utworzyć kontekst aplikacji za pomocą funkcji **app.app_context()**. 
+>Instancja app jest wtedy przekazywana do wątku jako argument, aby można w nim było utworzyć kontekst.
+
+Używam funkcji **send_async_email()** aby uniknąć opóźnień w wysyłaniu.
