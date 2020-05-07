@@ -17,10 +17,4 @@
            {{ wtf.quick_form(form) }}
         </form>
     </div>
-
-    <div>
-        <p>Lokalna data i czas: {{ moment(current_time).format('LLLL') }}.</p>
-        <p>To było: {{ moment(current_time).fromNow(refresh=True) }}.</p>
-    </div>
-
 {% endblock %}

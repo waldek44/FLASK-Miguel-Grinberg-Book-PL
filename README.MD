@@ -388,3 +388,58 @@ set FLASKY_ADMIN=mymail@gmail.com
 >Instancja app jest wtedy przekazywana do wątku jako argument, aby można w nim było utworzyć kontekst.
 
 Używam funkcji **send_async_email()** aby uniknąć opóźnień w wysyłaniu.
+
+<hr>
+
+## 7. STRUKTURA DUŻEJ APLIKACJI
+
+1. Tworzę **config.py** i przenoszę tam logikę konfiguracji z pliku **hello.py**  
+
+<hr>
+
+#### PAKIET APLIKACJI 
+
+> Pakiet aplikacji to miejsce w którym znajdują się wszystkie szablony, pliki statyczne i kody.
+
+Tworzę katalog **app**  i przenoszę do niego **templates** i **static**
+
+<hr>
+
+#### KORZYSTANIE Z FABRYKI APLIKACJI
+Tworzę konstruktor pakietu app - **__init__.py**, a w nim funkcję wytwórczą aplikacji **create_app()** - daje mi to możliwość
+tworzenia wielu instancji aplikacji, oraz ułatwia testy.
+> ten konstruktor importuje większość moich rozszerzeń, tworzy je niezainicjowane. 
+
+<hr>
+
+#### IMPLEMENTACJA FUNKCJI APLIKACJI W PROJEKCIE
+> Schemat (Blueprint) jest podobny do aplikacji. Różnica polega na tym, że pozostaje w stanie uśpienia dopóki schemat nie zostanie zarejestrowany w aplikacji.
+> Schematy powstają przez utworzenie obiektu Blueprint('nazwa projektu', pakiet w którym znajduje się schemat (zazwyczaj __name__) )
+
+1. W pakiecie **app** tworzę podpakiet **app/main** przeznaczony do obsługi pierwszego schematu (Blueprint) aplikacji.  
+2. W **app/main** tworzę konstruktor tworzący schemat **app/main/__init__.py**
+3. Tworzę plik zawierający trasy aplikacji **app/main/views.py**
+4. Tworzę plik zawierający procedury obsługi błędów **app/main/errors.py**
+5. Rejestruję Schemat Blueprint w w funkcji tworzącej aplikację wewnątrz **app/__init__.py**
+6. Tworzę plik zawierający formularze **app/main/forms.py**
+7. Tworzę moduł **flaksy.py** w katalogu najwyższego poziomu gdzie definiuję instancję aplikacji.
+8. Głównym skryptem aplikacji nie jest już **hello.py** lecz **flaksy.py** dlatego muszę zaktualizować zmienne środowiska:
+```
+set FLASK_APP=flasky.py
+set FLASK_DEBUG=1
+```
+9. Tworzę plik zależności:
+```
+pip freeze >requirements.txt
+```
+> Jeśli będę musiał zbudować to środowisko na nowym komputerze, wystarczy komenda `pip install -r requirements.txt`
+
+10. Definiuję testy jednostkowe w pliku **tests/test_basics.py** i dodaję też **tests/__init__.py**
+11. Tworzę plik **app/models.py**
+12. Migruję:
+```
+flask db migrate
+flask db upgrade
+```
+13. Dodaję pakiet mailowy **app/email.py**
+
